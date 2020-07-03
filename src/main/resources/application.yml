@@ -1,6 +1,6 @@
 server:
   port: 8082
-  
+---  
 spring:
   profiles: default
 #  jpa:
@@ -36,3 +36,41 @@ spring:
         output:
           destination: pcroom
           contentType: application/json
+
+
+---
+spring:
+  profiles: docker
+#  sleuth:
+#    sampler:
+#      probability: 1
+#    web:
+#      skipPattern: (^cleanup.*|.+favicon.*)
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: my-kafka.kafka.svc.cluster.local:9092
+        streams:
+          binder:
+            configuration:
+              default:
+                key:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+      bindings:
+        input:
+          group: seats
+          destination: pcroom
+          contentType: application/json
+        output:
+          destination: pcroom
+          contentType: application/json
+
+api:
+  url:
+    gateway5: http://gateway5:8080
+    order5: http://order5:8080
+    seat5: http://seat5:8080
+    payment5: http://payment5:8080

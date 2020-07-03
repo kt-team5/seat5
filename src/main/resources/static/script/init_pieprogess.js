@@ -62,7 +62,7 @@ function start_pieprogress(){
     	  }
     	  btnnum = $(this).attr('id');
     	  var qry = '';
-    	  if($('#'+btnnum).text() == "예약") qry = qry + 'http://localhost:8081/setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=true';
+    	  if($('#'+btnnum).text() == "예약") qry = qry + 'http://orders:8080/setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=true';
     	  else qry = qry + './setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=true';
           $.get(qry,function(data){
         	  if(data != 'SUCCESS'){

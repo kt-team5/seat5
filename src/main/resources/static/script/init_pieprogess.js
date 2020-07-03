@@ -62,7 +62,7 @@ function start_pieprogress(){
     	  }
     	  btnnum = $(this).attr('id');
     	  var qry = '';
-    	  if($('#'+btnnum).text() == "예약") qry = qry + 'http://localhost:8081/setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=true';
+    	  if($('#'+btnnum).text() == "예약") qry = qry + 'http://order5:8080/setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=true';
     	  else qry = qry + './setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=true';
           $.get(qry,function(data){
         	  if(data != 'SUCCESS'){
@@ -93,9 +93,9 @@ function start_pieprogress(){
 		        	for(var i = 1;i <= 10;i++)$('#progress'+i).asPieProgress('go', 0);
 		        	$('.pie_progress__content').text('0분');
 		            $.each(data,function(key,val){
-		                $('#progress'+val.seatId).asPieProgress('go', val.usages);
-		                $('#progress'+val.seatId+'> .pie_progress__content').text(val.usages+'분');
-		                if(val.usages > 0)$('#'+val.seatId).text('중단');
+		                $('#progress'+val.seatId).asPieProgress('go', val.times);
+		                $('#progress'+val.seatId+'> .pie_progress__content').text(val.times+'분');
+		                if(val.times > 0)$('#'+val.seatId).text('중단');
 		                else $('#'+val.seatId).text('예약');
 		            })
 			      });

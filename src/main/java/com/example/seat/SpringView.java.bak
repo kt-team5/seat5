@@ -24,11 +24,11 @@ public class SpringView {
 	@Autowired
 	SeatRepository seatRepository;
 	
-//	@RequestMapping(value ="/home")
-//    public String index() {		
-//		return "index";
-//    }
-//	
+	@RequestMapping(value ="/home")
+    public String index() {		
+		return "index";
+    }
+	
 	@GetMapping("/getInfo")
     public String getSeatInfo() {		
 		//System.out.println("======= getSeatInfo() ========");

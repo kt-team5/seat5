@@ -61,9 +61,10 @@ function start_pieprogress(){
     		  return;
     	  }
     	  btnnum = $(this).attr('id');
+   	  
     	  var qry = '';
     	  if($('#'+btnnum).text() == "예약") qry = qry + 'http://localhost:8081/setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=true';
-    	  else qry = qry + './setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=true';
+    	  else qry = qry + './setInfo?seatId='+btnnum+'&usages='+$(".timesetform").val()+'&occupied=flase';
           $.get(qry,function(data){
         	  if(data != 'SUCCESS'){
         		  alert('실패!');    	
@@ -75,9 +76,7 @@ function start_pieprogress(){
         		  setTimeout(function(){
         			  $('#'+btnnum).removeClass("color_yellow");
         		  },500);
-        		  
         	  }
-        		  
           });
         });
       
@@ -85,17 +84,22 @@ function start_pieprogress(){
       setInterval(function(){
     	if(demo_act++ % 5 == 0)
     		{
-    			for(var i = 1;i <= 10;i++)$('#progress'+i).asPieProgress('go', 999);
+    			for(var i = 1;i <= 10;i++){
+    				$('#progress'+i).asPieProgress('go', 999);
+    			}
     		}
     	else
     		{
 		        $.getJSON('./getInfo',function(data){
-		        	for(var i = 1;i <= 10;i++)$('#progress'+i).asPieProgress('go', 0);
+		        	for(var i = 1;i <= 10;i++){
+		        		$('#progress'+i).asPieProgress('go', 0);
+		        		$('#'+i).text('예약');
+		        	}
 		        	$('.pie_progress__content').text('0분');
 		            $.each(data,function(key,val){
-		                $('#progress'+val.seatId).asPieProgress('go', val.usages);
-		                $('#progress'+val.seatId+'> .pie_progress__content').text(val.usages+'분');
-		                if(val.usages > 0)$('#'+val.seatId).text('중단');
+		                $('#progress'+val.seatId).asPieProgress('go', val.times);
+		                $('#progress'+val.seatId+'> .pie_progress__content').text(val.times+'분');
+		                if(val.times > 0)$('#'+val.seatId).text('중단');
 		                else $('#'+val.seatId).text('예약');
 		            })
 			      });
@@ -109,11 +113,25 @@ function start_pieprogress(){
           alert('도움말 메뉴 클릭');
         });
       $('.shoptitle_sub3').on('click', function() {
-    	  if($('.shoptitle_sub3').text() == "나의 화면")location.href = "mypage.html";
+    	  if($('.shoptitle_sub3').text() == "나의 화면"){
+    		  //location.href = "mypage.html";
+    	      openWin = window.open("mypage.html","childForm"
+    	    		  ,"width=1500, height=720, resizable = no, scrollbars = no");
+    	      setTimeout(function(){
+    	    	  openWin.document.getElementById("cInput").value = btnnum;
+    	      },500);
+    	  }
     	  else location.href = "index.html";
-          //alert('나의메뉴');
         });
- 
+      
+      setTimeout(function(){
+    	  if($('#cInput').val() != undefined && $('#cInput').val() != 0){
+	    	  $('.progress_mypage .pie_progress').hide();
+	    	  $('.progress_mypage #progress'+$('#cInput').val()).show();
+	    	  $('#seatId').text($('#cInput').val());
+	    	  $('.progress_mypage .asPieProgressRow').width(160);
+    	  }
+      },500);  
 }
 
 
